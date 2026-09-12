@@ -13,12 +13,18 @@ public partial class FoalCheckerWindow : Window
     private readonly string _playerGuid;
     private List<HorseRecord> _allHorses = new();
 
-    public FoalCheckerWindow(string datFolder, string playerGuid)
+    /// <summary>Parameterless constructor required by Avalonia's XAML loader/previewer.
+    /// Not used by the running app, which always supplies datFolder/playerGuid.</summary>
+    public FoalCheckerWindow() : this(string.Empty, string.Empty, skipLoad: true) { }
+
+    public FoalCheckerWindow(string datFolder, string playerGuid) : this(datFolder, playerGuid, skipLoad: false) { }
+
+    private FoalCheckerWindow(string datFolder, string playerGuid, bool skipLoad)
     {
         InitializeComponent();
         _datFolder = datFolder;
         _playerGuid = playerGuid;
-        Load(null);
+        if (!skipLoad) Load(null);
     }
 
     private void OnWindowOpened(object? sender, EventArgs e) => WindowSizing.ClampToScreen(this);

@@ -1,0 +1,93 @@
+name: Release
+
+# Triggers the workflow whenever you push a tag like v1.0.0, v1.2.3, etc.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write  # needed so the workflow can create a GitHub Release
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - rid: win-x64
+            os: windows-latest
+            ext: zip
+          - rid: linux-x64
+            os: ubuntu-latest
+            ext: tar.gz
+          - rid: osx-x64
+            os: macos-latest
+            ext: tar.gz
+          - rid: osx-arm64
+            os: macos-latest
+            ext: tar.gz
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      # Trimming re-enabled: SettingsService now uses a source-generated
+      # JsonSerializerContext (no more reflection-based JSON), and all DataGrid
+      # bindings use x:DataType (compiled bindings), so nothing here depends on
+      # runtime reflection anymore. TrimMode=partial is used as a safety margin
+      # over full - it trims framework libraries but leaves app code untouched.
+      - name: Publish (${{ matrix.rid }})
+        run: >
+          dotnet publish
+          -c Release
+          -r ${{ matrix.rid }}
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:PublishTrimmed=true
+          -p:TrimMode=partial
+          -o publish/${{ matrix.rid }}
+
+      # Package the output into a single archive per platform
+      - name: Archive (zip - Windows)
+        if: matrix.ext == 'zip'
+        run: Compress-Archive -Path publish/${{ matrix.rid }}/* -DestinationPath Pferdehof-Companion-${{ matrix.rid }}.zip
+        shell: pwsh
+
+      - name: Archive (tar.gz - Linux/macOS)
+        if: matrix.ext == 'tar.gz'
+        run: tar -czvf Pferdehof-Companion-${{ matrix.rid }}.tar.gz -C publish/${{ matrix.rid }} .
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pferdehof-Companion-${{ matrix.rid }}
+          path: Pferdehof-Companion-${{ matrix.rid }}.${{ matrix.ext }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Flatten artifact folders
+        run: |
+          mkdir -p release-files
+          find artifacts -type f \( -name "*.zip" -o -name "*.tar.gz" \) -exec mv {} release-files/ \;
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-files/*
+          name: ${{ github.ref_name }}
+          generate_release_notes: true

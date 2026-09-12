@@ -14,12 +14,18 @@ public partial class HorseListWindow : Window
     private readonly PlayerRecord _player;
     private List<HorseRecord> _allHorses = new();
 
-    public HorseListWindow(string datFolder, PlayerRecord player)
+    /// <summary>Parameterless constructor required by Avalonia's XAML loader/previewer.
+    /// Not used by the running app, which always supplies datFolder/player.</summary>
+    public HorseListWindow() : this(string.Empty, new PlayerRecord { FilePath = string.Empty, Guid = string.Empty, Name = string.Empty }, skipLoad: true) { }
+
+    public HorseListWindow(string datFolder, PlayerRecord player) : this(datFolder, player, skipLoad: false) { }
+
+    private HorseListWindow(string datFolder, PlayerRecord player, bool skipLoad)
     {
         InitializeComponent();
         _datFolder = datFolder;
         _player = player;
-        LoadHorses();
+        if (!skipLoad) LoadHorses();
     }
 
     private void OnWindowOpened(object? sender, EventArgs e) => WindowSizing.ClampToScreen(this);

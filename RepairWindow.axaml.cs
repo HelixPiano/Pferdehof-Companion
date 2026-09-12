@@ -15,12 +15,18 @@ public partial class RepairWindow : Window
     private List<MissingHorseInfo> _unplaced = new();
     private List<MissingHorseInfo> _ownershipMismatches = new();
 
-    public RepairWindow(string datFolder, PlayerRecord player)
+    /// <summary>Parameterless constructor required by Avalonia's XAML loader/previewer.
+    /// Not used by the running app, which always supplies datFolder/player.</summary>
+    public RepairWindow() : this(string.Empty, new PlayerRecord { FilePath = string.Empty, Guid = string.Empty, Name = string.Empty }, skipLoad: true) { }
+
+    public RepairWindow(string datFolder, PlayerRecord player) : this(datFolder, player, skipLoad: false) { }
+
+    private RepairWindow(string datFolder, PlayerRecord player, bool skipLoad)
     {
         InitializeComponent();
         _datFolder = datFolder;
         _player = player;
-        Rescan();
+        if (!skipLoad) Rescan();
     }
 
     private void OnWindowOpened(object? sender, EventArgs e) => WindowSizing.ClampToScreen(this);

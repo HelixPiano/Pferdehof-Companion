@@ -15,6 +15,10 @@ public partial class HorseEditWindow : Window
     private readonly PlayerRecord? _currentPlayer;
     private readonly ObservableCollection<HorseFieldRow> _rows = new();
 
+    /// <summary>Parameterless constructor required by Avalonia's XAML loader/previewer.
+    /// Not used by the running app, which always supplies a real HorseRecord.</summary>
+    public HorseEditWindow() : this(new HorseRecord { FilePath = string.Empty, Root = new LingoPropertyList() }, null) { }
+
     /// <summary>currentPlayer is optional - pass it when opened from the normal Edit Horse flow
     /// so saves can auto-sync the player's #horses list/stall boxes; pass null if there's no
     /// active player context (keeps the window usable standalone).</summary>

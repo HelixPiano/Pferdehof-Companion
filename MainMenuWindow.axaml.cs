@@ -8,6 +8,10 @@ public partial class MainMenuWindow : Window
     private readonly string _datFolder;
     private readonly PlayerRecord _player;
 
+    /// <summary>Parameterless constructor required by Avalonia's XAML loader/previewer.
+    /// Not used by the running app, which always supplies datFolder/player.</summary>
+    public MainMenuWindow() : this(string.Empty, new PlayerRecord { FilePath = string.Empty, Guid = string.Empty, Name = string.Empty }) { }
+
     public MainMenuWindow(string datFolder, PlayerRecord player)
     {
         InitializeComponent();

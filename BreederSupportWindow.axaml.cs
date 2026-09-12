@@ -14,7 +14,13 @@ public partial class BreederSupportWindow : Window
     private List<HorseRecord> _allHorses = new();
     private CheckBox[] _statCheckBoxes = Array.Empty<CheckBox>();
 
-    public BreederSupportWindow(string datFolder, string playerGuid)
+    /// <summary>Parameterless constructor required by Avalonia's XAML loader/previewer.
+    /// Not used by the running app, which always supplies datFolder/playerGuid.</summary>
+    public BreederSupportWindow() : this(string.Empty, string.Empty, skipLoad: true) { }
+
+    public BreederSupportWindow(string datFolder, string playerGuid) : this(datFolder, playerGuid, skipLoad: false) { }
+
+    private BreederSupportWindow(string datFolder, string playerGuid, bool skipLoad)
     {
         InitializeComponent();
         _datFolder = datFolder;
@@ -22,7 +28,7 @@ public partial class BreederSupportWindow : Window
 
         _statCheckBoxes = new[] { StatHealth, StatPower, StatCondition, StatFlexibility, StatAdrenalin, StatWeight };
 
-        LoadHorses();
+        if (!skipLoad) LoadHorses();
     }
 
     private void OnWindowOpened(object? sender, EventArgs e) => WindowSizing.ClampToScreen(this);

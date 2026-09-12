@@ -10,12 +10,18 @@ public partial class HorseOverviewWindow : Window
     private readonly string _datFolder;
     private readonly string _playerGuid;
 
-    public HorseOverviewWindow(string datFolder, string playerGuid)
+    /// <summary>Parameterless constructor required by Avalonia's XAML loader/previewer.
+    /// Not used by the running app, which always supplies datFolder/playerGuid.</summary>
+    public HorseOverviewWindow() : this(string.Empty, string.Empty, skipLoad: true) { }
+
+    public HorseOverviewWindow(string datFolder, string playerGuid) : this(datFolder, playerGuid, skipLoad: false) { }
+
+    private HorseOverviewWindow(string datFolder, string playerGuid, bool skipLoad)
     {
         InitializeComponent();
         _datFolder = datFolder;
         _playerGuid = playerGuid;
-        Load();
+        if (!skipLoad) Load();
     }
 
     private void OnWindowOpened(object? sender, EventArgs e) => WindowSizing.ClampToScreen(this);
