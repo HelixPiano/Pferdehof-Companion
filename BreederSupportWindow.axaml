@@ -1,0 +1,70 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:PferdehofGUI"
+        x:Class="PferdehofGUI.BreederSupportWindow"
+        WindowStartupLocation="CenterOwner"
+        Title="Breeder Support"
+        Width="700" Height="780"
+        Opened="OnWindowOpened">
+    <DockPanel Margin="15">
+        <ScrollViewer DockPanel.Dock="Top" MaxHeight="420">
+        <StackPanel Spacing="10">
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <TextBlock Text="Breeding mode:" FontWeight="Bold" VerticalAlignment="Center"/>
+                <Button Content="Refresh" Click="OnRefreshClick"/>
+            </StackPanel>
+            <RadioButton x:Name="ModeAnyEligible" GroupName="mode" Content="Any eligible horse (mine or breeder's, not offline)" IsChecked="True" Click="OnCalculateClick"/>
+            <RadioButton x:Name="ModeOwnMareBreederStallion" GroupName="mode" Content="Own mare + breeder stallion" Click="OnCalculateClick"/>
+            <RadioButton x:Name="ModeOwnOnly" GroupName="mode" Content="Only own horses" Click="OnCalculateClick"/>
+
+            <Separator/>
+
+            <CheckBox x:Name="IgnoreEligibilityCheckBox"
+                      Content="Consider all horses regardless of age, pregnancy, or breeding cooldown (still excludes geldings)"
+                      Click="OnCalculateClick"/>
+
+            <Separator/>
+
+            <TextBlock Text="Stats to consider when picking the best pairing:" FontWeight="Bold"/>
+            <WrapPanel>
+                <CheckBox x:Name="StatHealth" Content="Health" IsChecked="True" Click="OnStatCheckChanged"/>
+                <CheckBox x:Name="StatPower" Content="Power" IsChecked="True" Click="OnStatCheckChanged" Margin="10,0,0,0"/>
+                <CheckBox x:Name="StatCondition" Content="Condition" IsChecked="True" Click="OnStatCheckChanged" Margin="10,0,0,0"/>
+                <CheckBox x:Name="StatFlexibility" Content="Flexibility" IsChecked="True" Click="OnStatCheckChanged" Margin="10,0,0,0"/>
+                <CheckBox x:Name="StatAdrenalin" Content="Adrenalin" IsChecked="True" Click="OnStatCheckChanged" Margin="10,0,0,0"/>
+                <CheckBox x:Name="StatWeight" Content="Weight" IsChecked="True" Click="OnStatCheckChanged" Margin="10,0,0,0"/>
+            </WrapPanel>
+
+            <Separator/>
+
+            <TextBlock x:Name="ResultText" TextWrapping="Wrap" FontFamily="Consolas,monospace"/>
+
+            <Separator/>
+
+            <TextBlock Text="Your horses (sorted by score):" FontWeight="Bold"/>
+        </StackPanel>
+        </ScrollViewer>
+
+        <DataGrid x:Name="OwnHorsesGrid"
+                  x:DataType="local:OwnHorseScoreRow"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  GridLinesVisibility="Horizontal"
+                  CanUserSortColumns="True"
+                  CanUserResizeColumns="True"
+                  HorizontalScrollBarVisibility="Auto"
+                  Margin="0,10,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="Auto" MinWidth="80"/>
+                <DataGridTextColumn Header="Sex" Binding="{Binding Sex}" Width="Auto" MinWidth="60"/>
+                <DataGridTextColumn Header="Health" Binding="{Binding Health}" Width="Auto" MinWidth="60"/>
+                <DataGridTextColumn Header="Power" Binding="{Binding Power}" Width="Auto" MinWidth="60"/>
+                <DataGridTextColumn Header="Condition" Binding="{Binding Condition}" Width="Auto" MinWidth="70"/>
+                <DataGridTextColumn Header="Flexibility" Binding="{Binding Flexibility}" Width="Auto" MinWidth="75"/>
+                <DataGridTextColumn Header="Adrenalin" Binding="{Binding Adrenalin}" Width="Auto" MinWidth="75"/>
+                <DataGridTextColumn Header="Weight" Binding="{Binding Weight}" Width="Auto" MinWidth="60"/>
+                <DataGridTextColumn Header="Score" Binding="{Binding Score}" Width="Auto" MinWidth="60"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>

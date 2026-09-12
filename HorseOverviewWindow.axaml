@@ -1,0 +1,41 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:PferdehofGUI"
+        x:Class="PferdehofGUI.HorseOverviewWindow"
+        WindowStartupLocation="CenterOwner"
+        Title="My Horses - Overview"
+        Width="950" Height="550"
+        Opened="OnWindowOpened">
+    <DockPanel Margin="15">
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="10" Margin="0,0,0,10">
+            <Button Content="Refresh" Click="OnRefreshClick"/>
+            <TextBlock x:Name="StatusText" VerticalAlignment="Center" Opacity="0.7"/>
+        </StackPanel>
+
+        <!-- Columns use Width="Auto": each sizes to fit its header/content on a wide enough
+             window, but every column is still user-resizable (drag the column border) and the
+             DataGrid scrolls horizontally if the total width exceeds the window. -->
+        <DataGrid x:Name="OverviewGrid"
+                  x:DataType="local:HorseOverviewRow"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  GridLinesVisibility="Horizontal"
+                  CanUserSortColumns="True"
+                  CanUserResizeColumns="True"
+                  HorizontalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="Auto" MinWidth="80"/>
+                <DataGridTextColumn Header="Sex" Binding="{Binding Sex}" Width="Auto" MinWidth="60"/>
+                <DataGridTextColumn Header="Stage" Binding="{Binding Development}" Width="Auto" MinWidth="60"/>
+                <DataGridTextColumn Header="Pregnancy" Binding="{Binding Pregnancy}" Width="Auto" MinWidth="80"/>
+                <DataGridTextColumn Header="Value" Binding="{Binding SalesPrice}" Width="Auto" MinWidth="60"/>
+                <DataGridTextColumn Header="Health" Binding="{Binding Health}" Width="Auto" MinWidth="60"/>
+                <DataGridTextColumn Header="Power" Binding="{Binding Power}" Width="Auto" MinWidth="60"/>
+                <DataGridTextColumn Header="Condition" Binding="{Binding Condition}" Width="Auto" MinWidth="70"/>
+                <DataGridTextColumn Header="Flexibility" Binding="{Binding Flexibility}" Width="Auto" MinWidth="75"/>
+                <DataGridTextColumn Header="Adrenalin" Binding="{Binding Adrenalin}" Width="Auto" MinWidth="75"/>
+                <DataGridTextColumn Header="Weight" Binding="{Binding Weight}" Width="Auto" MinWidth="60"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>

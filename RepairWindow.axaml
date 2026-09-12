@@ -1,0 +1,36 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="PferdehofGUI.RepairWindow"
+        WindowStartupLocation="CenterOwner"
+        Title="Repair Horse List"
+        Width="550" Height="720"
+        Opened="OnWindowOpened">
+    <ScrollViewer>
+        <DockPanel Margin="15">
+            <Button DockPanel.Dock="Top" Content="Rescan" Click="OnRescanClick" HorizontalAlignment="Left" Margin="0,0,0,10"/>
+
+            <StackPanel DockPanel.Dock="Top" Spacing="6">
+                <TextBlock Text="Missing from your #horses ownership list:" FontWeight="Bold"/>
+                <TextBlock Text="A horse you own but isn't listed here won't be recognized as yours at all." TextWrapping="Wrap" Opacity="0.7" FontSize="11"/>
+            </StackPanel>
+            <ListBox x:Name="MissingListListBox" Height="100" DockPanel.Dock="Top" Margin="0,5,0,5"/>
+            <Button DockPanel.Dock="Top" x:Name="FixListButton" Content="Add Missing Horse(s) to Ownership List" Click="OnFixListClick" IsEnabled="False" Margin="0,0,0,15"/>
+
+            <StackPanel DockPanel.Dock="Top" Spacing="6">
+                <TextBlock Text="Not placed in a stall box:" FontWeight="Bold"/>
+                <TextBlock Text="Correctly owned and listed, but not sitting in any of the 5 stable boxes - can still be invisible in the stable view. Only fixes if a box is free." TextWrapping="Wrap" Opacity="0.7" FontSize="11"/>
+            </StackPanel>
+            <ListBox x:Name="UnplacedListBox" Height="100" DockPanel.Dock="Top" Margin="0,5,0,5"/>
+            <Button DockPanel.Dock="Top" x:Name="FixBoxesButton" Content="Place into Free Box(es)" Click="OnFixBoxesClick" IsEnabled="False" Margin="0,0,0,15"/>
+
+            <StackPanel DockPanel.Dock="Top" Spacing="6">
+                <TextBlock Text="Sitting in your stable but owned by someone else (or no one):" FontWeight="Bold"/>
+                <TextBlock Text="A horse physically in one of your boxes whose own file doesn't say it's yours. Fixing this sets that horse's #owner to you and adds it to your ownership list." TextWrapping="Wrap" Opacity="0.7" FontSize="11"/>
+            </StackPanel>
+            <ListBox x:Name="OwnershipMismatchListBox" Height="100" DockPanel.Dock="Top" Margin="0,5,0,5"/>
+            <Button DockPanel.Dock="Top" x:Name="FixOwnershipButton" Content="Claim These Horse(s) as Mine" Click="OnFixOwnershipClick" IsEnabled="False"/>
+
+            <TextBlock x:Name="StatusText" DockPanel.Dock="Bottom" Margin="0,15,0,0" TextWrapping="Wrap"/>
+        </DockPanel>
+    </ScrollViewer>
+</Window>

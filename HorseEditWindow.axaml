@@ -1,0 +1,50 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:PferdehofGUI"
+        x:Class="PferdehofGUI.HorseEditWindow"
+        WindowStartupLocation="CenterOwner"
+        Title="Edit Horse"
+        Width="750" Height="650"
+        Opened="OnWindowOpened">
+    <DockPanel Margin="15">
+        <StackPanel DockPanel.Dock="Top" Spacing="8" Margin="0,0,0,10">
+            <TextBlock x:Name="SaveFileText"/>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="10" Margin="0,10,0,0">
+            <CheckBox x:Name="OverwriteCheckBox" Content="Overwrite existing horse (uncheck = save as new)" IsChecked="True"/>
+            <Button Content="Save" Click="OnSaveClick"/>
+            <TextBlock x:Name="StatusText" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <DataGrid x:Name="FieldsGrid"
+                  x:DataType="local:HorseFieldRow"
+                  AutoGenerateColumns="False"
+                  CanUserSortColumns="True"
+                  IsReadOnly="False"
+                  GridLinesVisibility="Horizontal"
+                  RowHeight="32">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Field" Binding="{Binding Path}" IsReadOnly="True" Width="280"/>
+                <DataGridTemplateColumn Header="Value" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate x:DataType="local:HorseFieldRow">
+                            <Grid>
+                                <ComboBox ItemsSource="{Binding Options}"
+                                          SelectedItem="{Binding Value, Mode=TwoWay, Converter={x:Static local:Converters.SuppressNullWriteback}}"
+                                          IsVisible="{Binding IsDropdown}"
+                                          HorizontalAlignment="Stretch"/>
+                                <TextBox Text="{Binding Value, Mode=TwoWay}"
+                                         IsVisible="{Binding !IsDropdown}"
+                                         IsReadOnly="{Binding !IsEditable}"
+                                         ToolTip.Tip="{Binding Error}"
+                                         BorderBrush="{Binding Error, Converter={x:Static local:Converters.ErrorToBrush}}"
+                                         BorderThickness="1"/>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>

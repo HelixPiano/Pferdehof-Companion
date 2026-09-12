@@ -1,0 +1,24 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="PferdehofGUI.StartupWindow"
+        Title="PferdehofGUI - Setup"
+        Width="480" Height="460"
+        MinWidth="420" MinHeight="420"
+        Opened="OnWindowOpened">
+    <ScrollViewer>
+        <StackPanel Margin="20" Spacing="12">
+            <TextBlock Text="1. Select your 'dat' folder" FontWeight="Bold"/>
+            <TextBlock Text="This is the folder literally named 'dat' inside the game's 'data' folder (contains 'players' and 'horses')." TextWrapping="Wrap" Opacity="0.7"/>
+            <Button Content="Choose Folder..." Click="OnChooseFolderClick"/>
+            <TextBlock x:Name="FolderText" Text="No folder selected" TextWrapping="Wrap"/>
+
+            <Separator Margin="0,10,0,10"/>
+
+            <TextBlock Text="2. Select player" FontWeight="Bold"/>
+            <ListBox x:Name="PlayerList" Height="140" SelectionChanged="OnPlayerSelected"/>
+            <TextBlock x:Name="StatusText" Opacity="0.7"/>
+
+            <Button Content="Continue" Click="OnContinueClick" HorizontalAlignment="Right"/>
+        </StackPanel>
+    </ScrollViewer>
+</Window>
