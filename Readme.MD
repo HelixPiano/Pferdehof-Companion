@@ -2,23 +2,21 @@
 
 A desktop companion tool for **Pferdehof** — view, edit, and manage your horses, players, and breeding decisions directly from your save files.
 
-Built with [Avalonia](https://avaloniaui.net/) and .NET. The app runs as a single window — pick a feature from the main menu and use the **← Back** button in the top-left corner to return, rather than juggling separate windows.
-
-> ⚠️ **This tool edits your save files directly.** Back up your `dat` folder before using it. See [Backing up your saves](#backing-up-your-saves) below.
+> **This tool edits your save files directly.** Back up your `dat` folder before using it. See [Backing up your saves](#backing-up-your-saves) below.
 
 ---
 
 ## Downloads
 
-Pre-built, ready-to-run versions are published on the [Releases page](../../releases) — no need to install .NET or build anything yourself.
+Pre-built, ready-to-run versions are published on the [Releases page](../../releases).
 
 | Platform | Status |
 |---|---|
-| Windows (x64) | ✅ Tested — this is the primary target, since the game itself is Windows-only |
-| Linux (x64) | ⚠️ Built, but **untested** |
-| macOS (x64 / ARM64) | ⚠️ Built, but **untested** |
+| Windows (x64) | Tested |
+| Linux (x64) | untested |
+| macOS (x64 / ARM64) | untested |
 
-The Linux and macOS builds exist mainly for completeness, since Avalonia supports them — but since Pferdehof itself only runs on Windows, using this tool there only makes sense if you're accessing save files copied from a Windows install (or running the game itself through a compatibility layer). If you try one of these builds, feedback on whether it actually works is welcome.
+The Linux and macOS builds exist mainly for completeness, but they are untested.
 
 ---
 
@@ -32,17 +30,14 @@ This tool is built for the **PC version** of the game known under several region
 | English | *My Pony Stable* (also sold as *My Horse Farm*) |
 | Dutch | *Paard & Pony – Mijn manege* |
 | French | *Cheval & Poney – Mon centre équestre Manager* |
-
-If your save files decrypt using the XOR key and Lingo property-list format described below, you're almost certainly running a compatible PC edition, regardless of which of the names above is on your box.
-
 ---
 
 ## Features
 
-1. **Edit Horse** — browse every horse in your save (filterable by *Mine*, *Breeder*, or *Offline*), and edit individual stats, genetics, equipment, and more, with built-in validation so you can't save invalid values.
-2. **Breeder Support** — calculates the best stallion/mare pairing based on whichever stats you choose to weigh (health, power, condition, flexibility, adrenalin, weight), across three modes: any eligible horse, your mare + a breeder stallion, or only your own horses. Includes a live overview of all your horses and their scores.
+1. **Edit Horse** — browse every horse in your save (filterable by *Mine*, *Breeder*, or *Offline*), and edit individual stats, genetics, equipment, and more. Warning: There are only a handful of sanity checks, so be careful.
+2. **Breeder Support** — calculates the best stallion/mare pairing based on whichever stats you choose to weigh, across three modes: any eligible horse, your mare + a breeder stallion, or only your own horses. Includes a live overview of all your horses and their scores.
 3. **Foal Checker** — lists foals you own and shows how their stats rolled compared to their parents' values.
-4. **My Horses — Overview** — a read-only summary table of every horse you own: name, sex, life stage, pregnancy status, value, and all six core stats.
+4. **My Horses — Overview** — a summary table of every horse you own: name, sex, life stage, pregnancy status, value, and all six core stats.
 5. **Repair Horse List** — diagnoses and fixes three specific consistency problems between your player file and your horse files (see [Why a repair tool?](#why-a-repair-tool) below).
 
 ---
@@ -53,7 +48,7 @@ If your save files decrypt using the XOR key and Lingo property-list format desc
 
 This is the folder literally named `dat` inside Pferdehof's `data` folder, containing `players` and `horses` subfolders.
 
-**Best long-term fix — install the game somewhere you have write permissions**, like your Desktop or a folder directly under your user account (e.g. `C:\Users\<YourUsername>\Games\Pferdehof`). Avoid `C:\Program Files\` and `C:\Program Files (x86)\` entirely. Modern Windows restricts normal write access to those folders, and older games like this one that don't expect that restriction can end up with their save data silently duplicated and redirected (see below) — installing outside them avoids the problem altogether, with exactly one copy of your save data, always where you'd expect it.
+**Install the game somewhere you have write permissions**, like your Desktop or a folder directly under your user account (e.g. `C:\Users\<YourUsername>\Games\Pferdehof`). Avoid `C:\Program Files\` and `C:\Program Files (x86)\` entirely. Modern Windows restricts normal write access to those folders, and older games like this one that don't expect that restriction can end up with their save data silently duplicated and redirected (see below) — installing outside them avoids the problem altogether, with exactly one copy of your save data, always where you'd expect it.
 
 **If it's already installed under `Program Files (x86)`**, Windows almost certainly redirects its actual save data elsewhere via **UAC File Virtualization** — a compatibility feature for older programs that predate modern Windows permission rules. Check here first:
 
@@ -68,8 +63,6 @@ If that folder exists and has recently-modified files in `players`/`horses`, tha
 The app decrypts every file in `dat/players` and lists the player names it finds. Pick yours (or switch between players anytime via the main menu).
 
 ### 3. Pick a feature from the main menu
-
-Everything happens in one window — use the **← Back** button (top-left) to return to the previous screen at any point. Your folder and player selection are remembered for next time.
 
 ---
 
@@ -101,11 +94,11 @@ Pferdehof tracks a horse's ownership in **three separate places** that all have 
 2. The player file's `#horses` array (the master ownership list)
 3. The player file's `#boxes` array (which stall, if any, the horse is physically placed in)
 
-If any one of these three drifts out of sync with the other two — which can happen through normal play, or through editing — a horse can become invisible in-game (or in this app) even though nothing about the horse file itself is "broken." The Repair tool checks all three combinations and can fix each independently:
+If any one of these three drifts out of sync with the other two, which can happen by editing, a horse can become invisible in-game (or in this app) even though nothing about the horse file itself is "broken." The Repair tool checks all three combinations and can fix each independently:
 
-- **Missing from the ownership list** — correctly owned and boxed, but absent from `#horses`.
-- **Not placed in a stall box** — correctly owned and listed, but not sitting in any of the 5 stable boxes.
-- **Boxed but not owned by you** — physically in one of your stalls, but the horse's own file says it belongs to someone else (or no one).
+- **Missing from the ownership list**: correctly owned and boxed, but absent from `#horses`.
+- **Not placed in a stall box**: correctly owned and listed, but not sitting in any of the 5 stable boxes.
+- **Boxed but not owned by you**: physically in one of your stalls, but the horse's own file says it belongs to someone else (or no one).
 
 ---
 
@@ -119,13 +112,13 @@ Before making any edits, copy your entire `dat` folder somewhere safe. Since thi
 
 ## Known limitations
 
-- The `#auto` (horse trailer) stall slot isn't handled by the Repair tool — only the 5 numbered stable boxes are. `#auto` also appears elsewhere in player files as a building ID, and a text-based fix can't safely tell the two apart.
-- A few numeric fields (`genetics.eyes`, `genetics.ears`, `genetics.PatternFactor`, horse `weight`) are validated as non-negative numbers only — there wasn't enough variation across real save data to confidently infer their true upper bounds, so no artificial cap is enforced.
+- The `#auto` (horse trailer) stall slot isn't handled by the Repair tool, only the 5 numbered stable boxes are. `#auto` also appears elsewhere in player files as a building ID, and a text-based fix can't safely tell the two apart.
+- A few numeric fields (`genetics.eyes`, `genetics.ears`, `genetics.PatternFactor`, horse `weight`) are validated as non-negative numbers only; there wasn't enough variation across real save data to confidently infer their true upper bounds, so no artificial cap is enforced.
 - Equipment item lists (saddle, halter, blanket, pad variants) are based on what could be found in the game's own data tables and may not be fully exhaustive.
-- Linux and macOS builds are produced automatically but are **untested** — see [Downloads](#downloads).
+- Linux and macOS builds are produced automatically but are **untested**; see [Downloads](#downloads).
 
 ---
 
 ## Disclaimer
 
-This is an unofficial, third-party tool. It is not affiliated with or endorsed by the developers or publishers of Pferdehof. Use at your own risk, and always keep a backup of your save data.
+This is an unofficial, third-party tool. It is not affiliated with or endorsed by the developers or publishers of the game. Use at your own risk, and always keep a backup of your save data.
