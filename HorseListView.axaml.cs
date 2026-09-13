@@ -1,34 +1,28 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Diagnostics;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace PferdehofGUI;
 
-public partial class HorseListWindow : Window
+public partial class HorseListView : UserControl
 {
+    private readonly Navigator _navigator;
     private readonly string _datFolder;
     private readonly PlayerRecord _player;
     private List<HorseRecord> _allHorses = new();
 
-    /// <summary>Parameterless constructor required by Avalonia's XAML loader/previewer.
-    /// Not used by the running app, which always supplies datFolder/player.</summary>
-    public HorseListWindow() : this(string.Empty, new PlayerRecord { FilePath = string.Empty, Guid = string.Empty, Name = string.Empty }, skipLoad: true) { }
-
-    public HorseListWindow(string datFolder, PlayerRecord player) : this(datFolder, player, skipLoad: false) { }
-
-    private HorseListWindow(string datFolder, PlayerRecord player, bool skipLoad)
+    public HorseListView(Navigator navigator, string datFolder, PlayerRecord player)
     {
         InitializeComponent();
+        _navigator = navigator;
         _datFolder = datFolder;
         _player = player;
-        if (!skipLoad) LoadHorses();
+        LoadHorses();
     }
-
-    private void OnWindowOpened(object? sender, EventArgs e) => WindowSizing.ClampToScreen(this);
 
     private void OnRefreshClick(object? sender, RoutedEventArgs e) => LoadHorses();
 
@@ -72,12 +66,12 @@ public partial class HorseListWindow : Window
         try
         {
             StatusText.Text = "";
-            new HorseEditWindow(horse, _player).Show(this);
+            _navigator.Push(new HorseEditView(horse, _player), $"Edit Horse - {horse.Name}");
         }
         catch (Exception ex)
         {
             StatusText.Text = $"Failed to open editor: {ex.Message}";
-            Debug.WriteLine($"HorseEditWindow error for {horse.FilePath}: {ex}");
+            Debug.WriteLine($"HorseEditView error for {horse.FilePath}: {ex}");
         }
     }
 }

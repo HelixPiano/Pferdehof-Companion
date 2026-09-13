@@ -8,21 +8,17 @@ using Avalonia.Interactivity;
 
 namespace PferdehofGUI;
 
-public partial class HorseEditWindow : Window
+public partial class HorseEditView : UserControl
 {
     private readonly LingoPropertyList _root;
     private string _filePath;
     private readonly PlayerRecord? _currentPlayer;
     private readonly ObservableCollection<HorseFieldRow> _rows = new();
 
-    /// <summary>Parameterless constructor required by Avalonia's XAML loader/previewer.
-    /// Not used by the running app, which always supplies a real HorseRecord.</summary>
-    public HorseEditWindow() : this(new HorseRecord { FilePath = string.Empty, Root = new LingoPropertyList() }, null) { }
-
     /// <summary>currentPlayer is optional - pass it when opened from the normal Edit Horse flow
     /// so saves can auto-sync the player's #horses list/stall boxes; pass null if there's no
-    /// active player context (keeps the window usable standalone).</summary>
-    public HorseEditWindow(HorseRecord horse, PlayerRecord? currentPlayer = null)
+    /// active player context (keeps the view usable standalone).</summary>
+    public HorseEditView(HorseRecord horse, PlayerRecord? currentPlayer = null)
     {
         InitializeComponent();
         _root = horse.Root;
@@ -33,8 +29,6 @@ public partial class HorseEditWindow : Window
         SaveFileText.Text = $"Editing: {horse.Name}  ({_filePath})";
         PopulateRows();
     }
-
-    private void OnWindowOpened(object? sender, EventArgs e) => WindowSizing.ClampToScreen(this);
 
     private void PopulateRows()
     {

@@ -1,0 +1,15 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="PferdehofGUI.AppWindow"
+        Title="PferdehofGUI"
+        Width="900" Height="700"
+        MinWidth="520" MinHeight="420">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="12" Margin="10">
+            <Button x:Name="BackButton" Content="← Back" IsVisible="False"/>
+            <TextBlock x:Name="TitleText" VerticalAlignment="Center" FontWeight="Bold" FontSize="15"/>
+        </StackPanel>
+        <Separator DockPanel.Dock="Top"/>
+        <ContentControl x:Name="ContentHost"/>
+    </DockPanel>
+</Window>

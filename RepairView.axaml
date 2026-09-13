@@ -1,10 +1,6 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Class="PferdehofGUI.RepairWindow"
-        WindowStartupLocation="CenterOwner"
-        Title="Repair Horse List"
-        Width="550" Height="720"
-        Opened="OnWindowOpened">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="PferdehofGUI.RepairView">
     <ScrollViewer>
         <DockPanel Margin="15">
             <Button DockPanel.Dock="Top" Content="Rescan" Click="OnRescanClick" HorizontalAlignment="Left" Margin="0,0,0,10"/>
@@ -33,4 +29,4 @@
             <TextBlock x:Name="StatusText" DockPanel.Dock="Bottom" Margin="0,15,0,0" TextWrapping="Wrap"/>
         </DockPanel>
     </ScrollViewer>
-</Window>
+</UserControl>

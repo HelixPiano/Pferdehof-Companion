@@ -7,31 +7,23 @@ using Avalonia.Interactivity;
 
 namespace PferdehofGUI;
 
-public partial class BreederSupportWindow : Window
+public partial class BreederSupportView : UserControl
 {
     private readonly string _datFolder;
-    private readonly string _playerGuid;
+    private readonly PlayerRecord _player;
     private List<HorseRecord> _allHorses = new();
     private CheckBox[] _statCheckBoxes = Array.Empty<CheckBox>();
 
-    /// <summary>Parameterless constructor required by Avalonia's XAML loader/previewer.
-    /// Not used by the running app, which always supplies datFolder/playerGuid.</summary>
-    public BreederSupportWindow() : this(string.Empty, string.Empty, skipLoad: true) { }
-
-    public BreederSupportWindow(string datFolder, string playerGuid) : this(datFolder, playerGuid, skipLoad: false) { }
-
-    private BreederSupportWindow(string datFolder, string playerGuid, bool skipLoad)
+    public BreederSupportView(string datFolder, PlayerRecord player)
     {
         InitializeComponent();
         _datFolder = datFolder;
-        _playerGuid = playerGuid;
+        _player = player;
 
         _statCheckBoxes = new[] { StatHealth, StatPower, StatCondition, StatFlexibility, StatAdrenalin, StatWeight };
 
-        if (!skipLoad) LoadHorses();
+        LoadHorses();
     }
-
-    private void OnWindowOpened(object? sender, EventArgs e) => WindowSizing.ClampToScreen(this);
 
     private void OnRefreshClick(object? sender, RoutedEventArgs e) => LoadHorses();
 
@@ -77,7 +69,7 @@ public partial class BreederSupportWindow : Window
         var scoreFields = GetSelectedStatFields();
         if (scoreFields.Count == 0) return; // guarded by OnStatCheckChanged, but be safe
 
-        var result = BreederService.FindBest(_allHorses, _playerGuid, mode, scoreFields, IgnoreEligibilityCheckBox.IsChecked == true);
+        var result = BreederService.FindBest(_allHorses, _player.Guid, mode, scoreFields, IgnoreEligibilityCheckBox.IsChecked == true);
 
         if (result is null)
         {
@@ -90,8 +82,8 @@ public partial class BreederSupportWindow : Window
         else
         {
             var sb = new StringBuilder();
-            sb.AppendLine($"Best stallion: {result.Stallion.Name} ({result.Stallion.OwnerLabel(_playerGuid)})");
-            sb.AppendLine($"Best mare:     {result.Mare.Name} ({result.Mare.OwnerLabel(_playerGuid)})");
+            sb.AppendLine($"Best stallion: {result.Stallion.Name} ({result.Stallion.OwnerLabel(_player.Guid)})");
+            sb.AppendLine($"Best mare:     {result.Mare.Name} ({result.Mare.OwnerLabel(_player.Guid)})");
             sb.AppendLine();
             sb.AppendLine($"Scored on: {string.Join(", ", scoreFields)}");
             sb.AppendLine($"Combined score (stallion + mare): {result.TotalScore:0.#}");
@@ -110,7 +102,7 @@ public partial class BreederSupportWindow : Window
     private void UpdateOwnHorsesOverview(List<string> scoreFields)
     {
         var rows = _allHorses
-            .Where(h => h.GetOwnerCategory(_playerGuid) == OwnerCategory.Mine)
+            .Where(h => h.GetOwnerCategory(_player.Guid) == OwnerCategory.Mine)
             .Select(h =>
             {
                 var mv = h.MaxValues;

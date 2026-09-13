@@ -5,20 +5,19 @@ using Avalonia.Interactivity;
 
 namespace PferdehofGUI;
 
-public partial class StartupWindow : Window
+public partial class StartupView : UserControl
 {
+    private readonly Navigator _navigator;
     private string? _datFolder;
     private System.Collections.Generic.List<PlayerRecord> _players = new();
-    public PlayerRecord? SelectedPlayer { get; private set; }
-    public string? DatFolder => _datFolder;
+    private PlayerRecord? _selectedPlayer;
 
-    public StartupWindow()
+    public StartupView(Navigator navigator)
     {
         InitializeComponent();
+        _navigator = navigator;
         LoadFromSavedSettings();
     }
-
-    private void OnWindowOpened(object? sender, EventArgs e) => WindowSizing.ClampToScreen(this);
 
     private void LoadFromSavedSettings()
     {
@@ -42,7 +41,10 @@ public partial class StartupWindow : Window
 
     private async void OnChooseFolderClick(object? sender, RoutedEventArgs e)
     {
-        var folders = await StorageProvider.OpenFolderPickerAsync(new Avalonia.Platform.Storage.FolderPickerOpenOptions
+        var topLevel = TopLevel.GetTopLevel(this);
+        if (topLevel is null) return;
+
+        var folders = await topLevel.StorageProvider.OpenFolderPickerAsync(new Avalonia.Platform.Storage.FolderPickerOpenOptions
         {
             Title = "Select the 'dat' folder"
         });
@@ -78,7 +80,7 @@ public partial class StartupWindow : Window
 
     private void OnPlayerSelected(object? sender, SelectionChangedEventArgs e)
     {
-        SelectedPlayer = PlayerList.SelectedItem as PlayerRecord;
+        _selectedPlayer = PlayerList.SelectedItem as PlayerRecord;
     }
 
     private void OnContinueClick(object? sender, RoutedEventArgs e)
@@ -88,7 +90,7 @@ public partial class StartupWindow : Window
             StatusText.Text = "Please select the 'dat' folder first.";
             return;
         }
-        if (SelectedPlayer is null)
+        if (_selectedPlayer is null)
         {
             StatusText.Text = "Please select a player.";
             return;
@@ -97,12 +99,10 @@ public partial class StartupWindow : Window
         SettingsService.Save(new AppSettings
         {
             DatFolder = _datFolder,
-            PlayerGuid = SelectedPlayer.Guid,
-            PlayerName = SelectedPlayer.Name
+            PlayerGuid = _selectedPlayer.Guid,
+            PlayerName = _selectedPlayer.Name
         });
 
-        var menu = new MainMenuWindow(_datFolder, SelectedPlayer);
-        menu.Show();
-        Close();
+        _navigator.Reset(new MainMenuView(_navigator, _datFolder, _selectedPlayer), "Main Menu");
     }
 }

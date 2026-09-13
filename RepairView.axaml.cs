@@ -6,7 +6,7 @@ using Avalonia.Interactivity;
 
 namespace PferdehofGUI;
 
-public partial class RepairWindow : Window
+public partial class RepairView : UserControl
 {
     private readonly string _datFolder;
     private readonly PlayerRecord _player;
@@ -15,21 +15,13 @@ public partial class RepairWindow : Window
     private List<MissingHorseInfo> _unplaced = new();
     private List<MissingHorseInfo> _ownershipMismatches = new();
 
-    /// <summary>Parameterless constructor required by Avalonia's XAML loader/previewer.
-    /// Not used by the running app, which always supplies datFolder/player.</summary>
-    public RepairWindow() : this(string.Empty, new PlayerRecord { FilePath = string.Empty, Guid = string.Empty, Name = string.Empty }, skipLoad: true) { }
-
-    public RepairWindow(string datFolder, PlayerRecord player) : this(datFolder, player, skipLoad: false) { }
-
-    private RepairWindow(string datFolder, PlayerRecord player, bool skipLoad)
+    public RepairView(string datFolder, PlayerRecord player)
     {
         InitializeComponent();
         _datFolder = datFolder;
         _player = player;
-        if (!skipLoad) Rescan();
+        Rescan();
     }
-
-    private void OnWindowOpened(object? sender, EventArgs e) => WindowSizing.ClampToScreen(this);
 
     private void OnRescanClick(object? sender, RoutedEventArgs e) => Rescan();
 

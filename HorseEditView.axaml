@@ -1,11 +1,7 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="using:PferdehofGUI"
-        x:Class="PferdehofGUI.HorseEditWindow"
-        WindowStartupLocation="CenterOwner"
-        Title="Edit Horse"
-        Width="750" Height="650"
-        Opened="OnWindowOpened">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:PferdehofGUI"
+             x:Class="PferdehofGUI.HorseEditView">
     <DockPanel Margin="15">
         <StackPanel DockPanel.Dock="Top" Spacing="8" Margin="0,0,0,10">
             <TextBlock x:Name="SaveFileText"/>
@@ -47,4 +43,4 @@
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
-</Window>
+</UserControl>

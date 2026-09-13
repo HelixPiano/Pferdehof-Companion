@@ -2,9 +2,23 @@
 
 A desktop companion tool for **Pferdehof** — view, edit, and manage your horses, players, and breeding decisions directly from your save files.
 
-Built with [Avalonia](https://avaloniaui.net/) and .NET, running on Windows.
+Built with [Avalonia](https://avaloniaui.net/) and .NET. The app runs as a single window — pick a feature from the main menu and use the **← Back** button in the top-left corner to return, rather than juggling separate windows.
 
 > ⚠️ **This tool edits your save files directly.** Back up your `dat` folder before using it. See [Backing up your saves](#backing-up-your-saves) below.
+
+---
+
+## Downloads
+
+Pre-built, ready-to-run versions are published on the [Releases page](../../releases) — no need to install .NET or build anything yourself.
+
+| Platform | Status |
+|---|---|
+| Windows (x64) | ✅ Tested — this is the primary target, since the game itself is Windows-only |
+| Linux (x64) | ⚠️ Built, but **untested** |
+| macOS (x64 / ARM64) | ⚠️ Built, but **untested** |
+
+The Linux and macOS builds exist mainly for completeness, since Avalonia supports them — but since Pferdehof itself only runs on Windows, using this tool there only makes sense if you're accessing save files copied from a Windows install (or running the game itself through a compatibility layer). If you try one of these builds, feedback on whether it actually works is welcome.
 
 ---
 
@@ -18,7 +32,6 @@ This tool is built for the **PC version** of the game known under several region
 | English | *My Pony Stable* (also sold as *My Horse Farm*) |
 | Dutch | *Paard & Pony – Mijn manege* |
 | French | *Cheval & Poney – Mon centre équestre Manager* |
-| Game Boy Advance | *Let's Ride! Sunshine Stables* (different platform/version — not what this tool targets) |
 
 If your save files decrypt using the XOR key and Lingo property-list format described below, you're almost certainly running a compatible PC edition, regardless of which of the names above is on your box.
 
@@ -56,7 +69,7 @@ The app decrypts every file in `dat/players` and lists the player names it finds
 
 ### 3. Pick a feature from the main menu
 
-Your folder and player selection are remembered for next time.
+Everything happens in one window — use the **← Back** button (top-left) to return to the previous screen at any point. Your folder and player selection are remembered for next time.
 
 ---
 
@@ -75,6 +88,8 @@ To build a standalone, self-contained executable (no .NET install required on th
 ```bash
 dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
 ```
+
+Swap `win-x64` for `linux-x64`, `osx-x64`, or `osx-arm64` to target a different platform.
 
 ---
 
@@ -107,6 +122,7 @@ Before making any edits, copy your entire `dat` folder somewhere safe. Since thi
 - The `#auto` (horse trailer) stall slot isn't handled by the Repair tool — only the 5 numbered stable boxes are. `#auto` also appears elsewhere in player files as a building ID, and a text-based fix can't safely tell the two apart.
 - A few numeric fields (`genetics.eyes`, `genetics.ears`, `genetics.PatternFactor`, horse `weight`) are validated as non-negative numbers only — there wasn't enough variation across real save data to confidently infer their true upper bounds, so no artificial cap is enforced.
 - Equipment item lists (saddle, halter, blanket, pad variants) are based on what could be found in the game's own data tables and may not be fully exhaustive.
+- Linux and macOS builds are produced automatically but are **untested** — see [Downloads](#downloads).
 
 ---
 

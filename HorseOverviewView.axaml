@@ -1,11 +1,7 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="using:PferdehofGUI"
-        x:Class="PferdehofGUI.HorseOverviewWindow"
-        WindowStartupLocation="CenterOwner"
-        Title="My Horses - Overview"
-        Width="950" Height="550"
-        Opened="OnWindowOpened">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:PferdehofGUI"
+             x:Class="PferdehofGUI.HorseOverviewView">
     <DockPanel Margin="15">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="10" Margin="0,0,0,10">
             <Button Content="Refresh" Click="OnRefreshClick"/>
@@ -38,4 +34,4 @@
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
-</Window>
+</UserControl>

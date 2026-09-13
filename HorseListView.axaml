@@ -1,10 +1,6 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Class="PferdehofGUI.HorseListWindow"
-        WindowStartupLocation="CenterOwner"
-        Title="Edit Horse - Select"
-        Width="500" Height="550"
-        Opened="OnWindowOpened">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="PferdehofGUI.HorseListView">
     <DockPanel Margin="15">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="8" Margin="0,0,0,10">
             <TextBlock Text="Filter:" VerticalAlignment="Center"/>
@@ -22,4 +18,4 @@
 
         <ListBox x:Name="HorseListBox" DoubleTapped="OnHorseDoubleTapped"/>
     </DockPanel>
-</Window>
+</UserControl>

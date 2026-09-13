@@ -1,10 +1,6 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Class="PferdehofGUI.MainMenuWindow"
-        WindowStartupLocation="CenterOwner"
-        Title="PferdehofGUI"
-        Width="400" Height="380"
-        Opened="OnWindowOpened">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="PferdehofGUI.MainMenuView">
     <ScrollViewer>
         <StackPanel Margin="20" Spacing="12">
             <TextBlock x:Name="PlayerLabel" FontWeight="Bold" FontSize="16"/>
@@ -19,4 +15,4 @@
             <Button Content="Repair Horse List..." HorizontalAlignment="Left" Click="OnRepairClick"/>
         </StackPanel>
     </ScrollViewer>
-</Window>
+</UserControl>

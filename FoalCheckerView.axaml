@@ -1,10 +1,6 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Class="PferdehofGUI.FoalCheckerWindow"
-        WindowStartupLocation="CenterOwner"
-        Title="Foal Checker"
-        Width="600" Height="550"
-        Opened="OnWindowOpened">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="PferdehofGUI.FoalCheckerView">
     <DockPanel Margin="15">
         <Button DockPanel.Dock="Top" Content="Refresh" Click="OnRefreshClick" Margin="0,0,0,10" HorizontalAlignment="Left"/>
         <Grid ColumnDefinitions="200,*">
@@ -14,4 +10,4 @@
             </ScrollViewer>
         </Grid>
     </DockPanel>
-</Window>
+</UserControl>

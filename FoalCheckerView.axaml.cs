@@ -1,35 +1,25 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 
 namespace PferdehofGUI;
 
-public partial class FoalCheckerWindow : Window
+public partial class FoalCheckerView : UserControl
 {
     private readonly string _datFolder;
-    private readonly string _playerGuid;
+    private readonly PlayerRecord _player;
     private List<HorseRecord> _allHorses = new();
 
-    /// <summary>Parameterless constructor required by Avalonia's XAML loader/previewer.
-    /// Not used by the running app, which always supplies datFolder/playerGuid.</summary>
-    public FoalCheckerWindow() : this(string.Empty, string.Empty, skipLoad: true) { }
-
-    public FoalCheckerWindow(string datFolder, string playerGuid) : this(datFolder, playerGuid, skipLoad: false) { }
-
-    private FoalCheckerWindow(string datFolder, string playerGuid, bool skipLoad)
+    public FoalCheckerView(string datFolder, PlayerRecord player)
     {
         InitializeComponent();
         _datFolder = datFolder;
-        _playerGuid = playerGuid;
-        if (!skipLoad) Load(null);
+        _player = player;
+        Load(null);
     }
 
-    private void OnWindowOpened(object? sender, EventArgs e) => WindowSizing.ClampToScreen(this);
-
-    private void OnRefreshClick(object? sender, RoutedEventArgs e)
+    private void OnRefreshClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         // Try to keep the same foal selected across the refresh, by GUID.
         string? previousGuid = (FoalListBox.SelectedItem as HorseRecord)?.Guid;
@@ -39,7 +29,7 @@ public partial class FoalCheckerWindow : Window
     private void Load(string? reselectGuid)
     {
         _allHorses = HorseService.LoadAll(_datFolder);
-        var foals = FoalCheckerService.GetOwnedFoals(_allHorses, _playerGuid);
+        var foals = FoalCheckerService.GetOwnedFoals(_allHorses, _player.Guid);
         FoalListBox.ItemsSource = foals;
 
         if (reselectGuid is not null)
